@@ -1,16 +1,6 @@
 // code away!
-const express = require('express');
-const morgan = require('morgan');
-const helmet = require('helmet');
+const server = require('./server');
 
-const postRouter = require('./posts/postRouter');
-
-const server = express();
-
-server.use(express.json());
-
-server.use(helmet());
-
-server.use('/api/posts', postRouter);
-
-module.exports = server;
+server.listen(5000, () => {
+  console.log('\n* Server Running on http://localhost:5000 *\n');
+});
