@@ -5,7 +5,7 @@ const Posts = require('../posts/postDb');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // do your magic!
   Users.insert(req.body)
     .then(user => {
@@ -63,7 +63,7 @@ router.get('/:id', validateUserId, (req, res) => {
     });
 });
 
-router.get('/:id/posts', validatePost, (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
   Users.getUserPosts(req.params.id)
     .then(post => {
@@ -120,14 +120,24 @@ function validateUserId(req, res, next) {
   next();
 }
 
-function validateUser() {
+function validateUser(req, res, next) {
   // do your magic!
+  const content = req.body;
+
+  if (content === null) {
+    res.status(400).json({ errorMsg: 'Missing user content' });
+  }
+
+  next();
 }
 
 function validatePost(req, res, next) {
   // do your magic!
-  req.body = 'Test';
+  const content = req.body;
 
+  if (content === null) {
+    res.status(400).json({ errorMsg: 'Missing post content ' });
+  }
   next();
 }
 
